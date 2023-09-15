@@ -11,14 +11,16 @@ const PORT = process.env.PORT || 3001;
 
 const sess = {
   secret: 'super secret key',
+  cookie: {
+    // 1hr = 3,600,000ms
+    expires: 7200000
+  },
   resave: false,
   saveUninitialized: true,
 };
 
 const hbs = exphbs.create({})
 app.engine('handlebars', hbs.engine)
-// app.engine('handlebars', exphbs())
-// app.engine('.hbs', exphbs.engine({ extname: '.hbs', defaultLayout: "main"}));
 app.set('view engine', 'handlebars');
 
 app.use(express.json());
