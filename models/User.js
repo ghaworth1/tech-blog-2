@@ -1,8 +1,14 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
+const bcrypt = require('bcrypt');
 
-// Create a new Sequelize model for books
-class User extends Model {}
+// Create a new Sequelize model
+
+class User extends Model {
+  checkPassword(loginPw) {
+    return bcrypt.compareSync(loginPw, this.password); 
+  }
+}
 
 User.init(
   {

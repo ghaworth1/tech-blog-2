@@ -1,52 +1,55 @@
 const router = require('express').Router();
 const { Project, User } = require('../models');
-const withAuth = require('../utils/auth');
+const sequelize = require('../config/connection');
+
 
 router.get('/', async (req, res) => {
   try {
-    // Get all  and JOIN with user data
-    const projectData = await Project.findAll({
+    // get all
+  const dbPostData = await Post.findAll({ 
+      attributes: ['id', 'title', 'content', 'created_at'],           
       include: [
-        {
-          model: User,
-          attributes: ['name'],
-        },
+          {
+              model: Comment,
+              attributes: ['id', 'comment', 'postId', 'userId', 'created_at'],
+              include: {
+                  model: User,
+                  attributes: ['username'],
+              },
+          },
+          {
+              model: User,
+              attributes: ['username'],
+          },
       ],
-    });
-
-    // Serialize data so the template can read it
-    const projects = projectData.map((project) => project.get({ plain: true }));
-
-    // Pass serialized data and session flag into template
-    res.render('homepage', { 
-      projects, 
-      logged_in: req.session.logged_in 
-    });
-  } catch (err) {
-    res.status(500).json(err);
-  }
+      order: [['created_at', 'DESC']],
+  })
+  // Serialize data retrieved
+  const posts = dbPostData.map((post) => post.get({ plain: true }));
+  console.log(posts)
+  // Respond with template to render along with date retrieved
+  res.render('homepage', 
+      { posts, 
+      loggedIn: req.session.loggedIn, 
+      username: req.session.username,
+      userId: req.session.userId });
+} catch (err) {
+  res.status(500).json(err);
+}
 });
 
-router.get('/project/:id', async (req, res) => {
-  try {
-    const projectData = await Project.findByPk(req.params.id, {
-      include: [
-        {
-          model: User,
-          attributes: ['name'],
-        },
-      ],
-    });
-
-    const project = projectData.get({ plain: true });
-
-    res.render('project', {
-      ...project,
-      logged_in: req.session.logged_in
-    });
-  } catch (err) {
-    res.status(500).json(err);
+//login
+router.get("/login", (req, res) => {
+  if (req.session.loggedIn) {
+    res.redirect("/");
+    return;
   }
+  res.render("login");
+});
+
+//signup
+router.get("/signup", (req, res) => {
+  res.render("signup");
 });
 
 // Use withAuth middleware to prevent access to route

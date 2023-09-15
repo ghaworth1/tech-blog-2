@@ -10,41 +10,28 @@ Post.init(
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,
-      autoIncrement: true,
+      autoIncrement: true
     },
-    username: {
+    title: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    post_text: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        isAlphanumeric: true,
+        len: [0, 255]
       }
     },
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: { 
-        isEmail: true 
-      },
-      unique: true,
-    },
-    password: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: { len: [8] },
-    },
+    user_id: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: 'user',
+        key: 'id'
+      }
+    }
   },
-  {
-    hooks: {
-      beforeCreate: async (newUserData) => {
-        newUserData.email = await newUserData.email.toLowerCase();
-        return newUserData;
-      },
-      beforeUpdate: async (updatedUserData) => {
-        updatedUserData.email = await updatedUserData.email.toLowerCase();
-        return updatedUserData;
-      },
-    },
-  },
+  
 
   {
     // Link to database connection
