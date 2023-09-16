@@ -19,14 +19,13 @@ router.get('/:id', async (req, res) => {
 
 //post with bcrypt
 router.post('/', async (req, res) => {
-  try {
-    const newData = req.body;
-    newData.password = await bcrypt.hash(req.body.password, 10);
-    const userData = await Model.create(newData);
-    res.status(200).json({newData});
-  } catch (err) {
-    res.status(400).json(err);
-  }
+ try {
+   const newData = req.body;
+   newData.password = await bcrypt.hash(req.body.password, 10);
+   res.status(200).json({newData});
+ } catch (err) {
+   res.status(400).json(err);
+ }
 });
 
 //put

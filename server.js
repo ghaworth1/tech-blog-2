@@ -3,8 +3,8 @@ const express = require('express');
 const session = require('express-session');
 const exphbs = require('express-handlebars');
 const routes = require('./controllers');
-const sequelize = require('./config/connections');
-
+const sequelize = require('./config/connection');
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -13,13 +13,16 @@ const sess = {
   secret: 'super secret key',
   cookie: {
     // 1hr = 3,600,000ms
-    expires: 7200000
+    expires: 3600000
   },
   resave: false,
   saveUninitialized: true,
+  store: new SequelizeStore({
+    db: sequelize,
+  }),
 };
 
-const hbs = exphbs.create({})
+const hbs = exphbs.create({ helpers })
 app.engine('handlebars', hbs.engine)
 app.set('view engine', 'handlebars');
 

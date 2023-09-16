@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
 });
 
 //get by id
-router.get('/', async (req, res) => {
+router.get('/:id', async (req, res) => {
   const results = await Model.findByPk(req.params.id).catch((err) => {res.json(err) });
   res.status(200).json({ results });
 });
@@ -38,7 +38,7 @@ router.put('/:id', async (req, res) => {
 //delete
 router.delete('/:id', async (req, res) => {
   try {
-    const updatedData = await Model.destroy( { where: { id: req.params.id } } );
+    const removedData = await Model.destroy( { where: { id: req.params.id } } );
     res.status(200).json({removedData});
   } catch {
     res.status(400).json(err);
