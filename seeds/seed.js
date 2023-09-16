@@ -15,6 +15,11 @@
 
 // seedDB();
 
+
+
+
+//seed from JSON
+
 const sequelize = require("../config/connection");
 const { User, Post, Comment } = require("../models");
 
@@ -23,7 +28,7 @@ const postData = require("./posts.json");
 const commentData = require("./comments.json");
 
 // Seeds database with user data, blogPost data, and comment data
-const seedDbase = async () => {
+const seedDb = async () => {
   await sequelize.sync({ force: true });
 
   const users = await User.bulkCreate(userData, {

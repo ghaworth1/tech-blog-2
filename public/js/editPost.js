@@ -1,8 +1,9 @@
 async function editFormHandler(event) {
   event.preventDefault();
 
-  const title = document.querySelector('input[name="post-title"]').value.trim();
-  const content = document.querySelector('input[name="content"]').value.trim();
+   //to add selectors once core logic works...
+  const title = document.querySelector('').value.trim();
+  const content = document.querySelector('').value.trim();
   console.log(title);
   console.log(content);
 
