@@ -1,8 +1,10 @@
 async function commentFormHandler(event) {
   event.preventDefault();
 
+
+   //to add selectors once core logic works...
   const comment_text = document
-    .querySelector('input[name="comment-body"]')
+    .querySelector("")
     .value.trim();
 
   const post_id = window.location.toString().split("/")[
