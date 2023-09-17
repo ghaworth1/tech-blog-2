@@ -3,7 +3,7 @@ const { Model, DataTypes } = require('sequelize');
 
 // Create a new Sequelize model
 
-class Post extends Model {}
+class Comment extends Model {}
 
 Comment.init(
   {
